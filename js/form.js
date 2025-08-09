@@ -17,6 +17,8 @@ function resetForm() {
   form.reset();
   resetMainPin();
   setDefaultAddress();
+  const openedPopup = document.querySelector('.leaflet-popup');
+  if (openedPopup) openedPopup.remove();
 }
 
 export function initForm() {

@@ -205,3 +205,25 @@ export function showSuccessMessage(text) {
 export function showErrorMessage(text) {
   return showMessageByTemplate(TEMPLATE_ID_ERROR, { message: text || null });
 }
+
+// Динамическая подгрузка внешних скриптов (CDN) с кешированием
+const loadedScriptSrcToPromise = new Map();
+
+export function loadScriptOnce(src, globalName) {
+  if (globalName && typeof window[globalName] !== 'undefined') {
+    return Promise.resolve(window[globalName]);
+  }
+  if (loadedScriptSrcToPromise.has(src)) {
+    return loadedScriptSrcToPromise.get(src);
+  }
+  const promise = new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => resolve(globalName ? window[globalName] : undefined);
+    script.onerror = () => reject(new Error(`Не удалось загрузить скрипт: ${src}`));
+    document.head.appendChild(script);
+  });
+  loadedScriptSrcToPromise.set(src, promise);
+  return promise;
+}

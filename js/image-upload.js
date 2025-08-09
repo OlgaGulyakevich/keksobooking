@@ -5,6 +5,7 @@ const avatarInput = /** @type {HTMLInputElement} */ (form.querySelector('#avatar
 const avatarPreviewImg = /** @type {HTMLImageElement} */ (form.querySelector('.ad-form-header__preview img'));
 const imagesInput = /** @type {HTMLInputElement} */ (form.querySelector('#images'));
 const photosContainer = form.querySelector('.ad-form__photo');
+const dropZone = form.querySelector('.ad-form__drop-zone');
 
 const DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
 
@@ -62,6 +63,18 @@ async function handleImagesChange() {
 export function initImageUpload() {
   if (avatarInput) avatarInput.addEventListener('change', handleAvatarChange);
   if (imagesInput) imagesInput.addEventListener('change', handleImagesChange);
+  if (dropZone) {
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+    });
+    dropZone.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      const files = Array.from(e.dataTransfer.files || []);
+      if (!files.length) return;
+      imagesInput.files = e.dataTransfer.files;
+      await handleImagesChange();
+    });
+  }
 }
 
 export function resetImagePreviews() {
