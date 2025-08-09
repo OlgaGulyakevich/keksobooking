@@ -4,20 +4,20 @@ import {
   DEFAULT_DECIMAL_PRECISION,
   MAX_VISIBLE_PINS,
 } from './constants.js';
-import { qs } from './util.js';
+import { qs, showErrorMessage } from './util.js';
 
 let mapInstance = null;
 let mainPinMarker = null;
 let markerLayerGroup = null;
 
 const MAIN_PIN_ICON = L.icon({
-  iconUrl: 'img/muffin-red.svg',
+  iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
 const PIN_ICON = L.icon({
-  iconUrl: 'img/muffin-white.svg',
+  iconUrl: 'img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
@@ -27,6 +27,10 @@ export function formatCoords({ lat, lng }) {
 }
 
 export function initMap(onReady) {
+  if (typeof window.L === 'undefined') {
+    showErrorMessage('Карта не загрузилась. Проверьте подключение Leaflet.');
+    return null;
+  }
   const canvas = qs('#map-canvas');
   mapInstance = L.map(canvas)
     .on('load', () => {
@@ -38,8 +42,7 @@ export function initMap(onReady) {
     attribution: '&copy; OpenStreetMap contributors',
   })
     .on('tileerror', () => {
-      // eslint-disable-next-line no-console
-      console.error('Не удалось загрузить тайлы карты');
+      showErrorMessage('Не удалось загрузить тайлы карты. Проверьте соединение.');
     })
     .addTo(mapInstance);
 

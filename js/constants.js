@@ -6,7 +6,7 @@
 export const DEFAULT_DECIMAL_PRECISION = 5;
 
 // Карта (Токио)
-export const MAP_CENTER = { lat: 35.6895, lng: 139.692 };
+export const MAP_CENTER = { lat: 35.6895, lng: 139.6917 };
 export const MAP_DEFAULT_ZOOM = 12;
 export const MAX_VISIBLE_PINS = 10;
 
@@ -38,7 +38,7 @@ export const SLIDER_MAX = PRICE_MAX;
 export const SLIDER_STEP = 100;
 
 // Сетевые настройки API
-export const API_BASE_URL = 'https://26.javascript.pages.academy/keksobooking';
+export const API_BASE_URL = 'https://25.javascript.htmlacademy.pro/keksobooking';
 export const API_GET_URL = `${API_BASE_URL}/data`;
 export const API_POST_URL = API_BASE_URL;
 export const API_TIMEOUT_MS = 10000;
