@@ -13,18 +13,19 @@ const formElements = form.querySelectorAll('fieldset, select, input, textarea, b
 const filtersForm = document.querySelector('.map__filters');
 const addressInput = /** @type {HTMLInputElement} */ (qs('#address'));
 
-function setFormDisabled(disabled) {
+function setAdFormDisabled(disabled) {
   form.classList.toggle('ad-form--disabled', disabled);
-  filtersForm.classList.toggle('map__filters--disabled', disabled);
-  [...formElements, ...filtersForm.elements].forEach((el) => {
-    el.disabled = disabled;
-  });
-  // Block/enable slider interactions
+  formElements.forEach((el) => { el.disabled = disabled; });
   const slider = document.querySelector('.ad-form__slider');
   if (slider && slider.noUiSlider) {
     const base = slider.querySelector('.noUi-base');
     if (base) base.style.pointerEvents = disabled ? 'none' : '';
   }
+}
+
+function setFiltersDisabled(disabled) {
+  filtersForm.classList.toggle('map__filters--disabled', disabled);
+  Array.from(filtersForm.elements).forEach((el) => { el.disabled = disabled; });
 }
 
 function updateAddressField(coords) {
@@ -34,11 +35,13 @@ function updateAddressField(coords) {
 let cachedAds = [];
 
 async function bootstrap() {
-  // Старт: форма неактивна
-  setFormDisabled(true);
+  // Старт: обе формы неактивны
+  setAdFormDisabled(true);
+  setFiltersDisabled(true);
 
   initMap(() => {
-    setFormDisabled(false);
+    // После инициализации карты активируем только форму объявления
+    setAdFormDisabled(false);
   });
 
   initForm();
@@ -50,6 +53,8 @@ async function bootstrap() {
     const raw = await getAds();
     cachedAds = normalizeAds(raw);
     renderPins(cachedAds, createAdPopup);
+    // Данные загружены — делаем фильтры доступными
+    setFiltersDisabled(false);
     onFiltersChange(() => {
       const current = getFilters();
       const filtered = filterAds(cachedAds, current);
@@ -58,6 +63,7 @@ async function bootstrap() {
     });
   } catch (e) {
     showErrorMessage('Не удалось загрузить данные объявлений. Попробуйте позже');
+    // В случае ошибки фильтры остаются отключёнными
   }
 }
 
