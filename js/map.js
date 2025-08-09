@@ -27,7 +27,7 @@ export function formatCoords({ lat, lng }) {
 }
 
 export function initMap(onReady) {
-  if (typeof window.L === 'undefined') {
+  if (typeof L === 'undefined') {
     showErrorMessage('Карта не загрузилась. Проверьте подключение Leaflet.');
     return null;
   }
