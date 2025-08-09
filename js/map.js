@@ -36,7 +36,12 @@ export function initMap(onReady) {
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; OpenStreetMap contributors',
-  }).addTo(mapInstance);
+  })
+    .on('tileerror', () => {
+      // eslint-disable-next-line no-console
+      console.error('Не удалось загрузить тайлы карты');
+    })
+    .addTo(mapInstance);
 
   markerLayerGroup = L.layerGroup().addTo(mapInstance);
 

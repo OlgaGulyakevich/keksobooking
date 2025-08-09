@@ -5,7 +5,8 @@ import { createAdPopup } from './popup.js';
 import { qs } from './util.js';
 import { initForm } from './form.js';
 import { initPriceSlider } from './slider.js';
-import { getFilters, filterAds, onFiltersChange } from './filter.js';
+import { getFilters, filterAds, onFiltersChange, rankAds } from './filter.js';
+import { showErrorMessage } from './util.js';
 
 const form = document.querySelector('.ad-form');
 const formElements = form.querySelectorAll('fieldset, select, input, textarea, button');
@@ -46,13 +47,11 @@ async function bootstrap() {
     onFiltersChange(() => {
       const current = getFilters();
       const filtered = filterAds(cachedAds, current);
-      renderPins(filtered, createAdPopup);
+      const ranked = rankAds(filtered, current);
+      renderPins(ranked, createAdPopup);
     });
   } catch (e) {
-    // Ошибки загрузки данных не блокируют карту и форму
-    // Можно добавить показ баннера/уведомления
-    // eslint-disable-next-line no-console
-    console.error(e);
+    showErrorMessage('Не удалось загрузить данные объявлений. Попробуйте позже');
   }
 }
 

@@ -156,12 +156,17 @@ export function onEscape(callback) {
 }
 
 // Сообщения (успех/ошибка) на основе шаблонов в DOM
-function showMessageByTemplate(templateId, { autoCloseMs = null } = {}) {
+function showMessageByTemplate(templateId, { autoCloseMs = null, message = null } = {}) {
   const template = document.querySelector(`#${templateId}`);
   const node = template?.content?.firstElementChild?.cloneNode(true);
   if (!node) return () => {};
 
   document.body.appendChild(node);
+  // Подменяем текст сообщения, если передан
+  if (typeof message === 'string' && message) {
+    const messageEl = node.querySelector('.error__message, .success__message');
+    if (messageEl) messageEl.textContent = message;
+  }
 
   const remove = () => {
     node.remove();
@@ -193,10 +198,10 @@ function showMessageByTemplate(templateId, { autoCloseMs = null } = {}) {
   };
 }
 
-export function showSuccessMessage() {
-  return showMessageByTemplate(TEMPLATE_ID_SUCCESS);
+export function showSuccessMessage(text) {
+  return showMessageByTemplate(TEMPLATE_ID_SUCCESS, { message: text || null });
 }
 
-export function showErrorMessage() {
-  return showMessageByTemplate(TEMPLATE_ID_ERROR);
+export function showErrorMessage(text) {
+  return showMessageByTemplate(TEMPLATE_ID_ERROR, { message: text || null });
 }

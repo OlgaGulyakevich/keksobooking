@@ -38,6 +38,20 @@ export function filterAds(ads, filters) {
   });
 }
 
+// Ранжирование: сначала по числу совпадающих фичей, затем по цене (возрастание)
+export function rankAds(ads, filters) {
+  const features = filters.features || [];
+  const scored = ads.map((ad) => {
+    const featureScore = features.reduce((acc, f) => acc + (ad.features?.includes(f) ? 1 : 0), 0);
+    return { ad, score: featureScore };
+  });
+  scored.sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    return (a.ad.price ?? 0) - (b.ad.price ?? 0);
+  });
+  return scored.map((s) => s.ad);
+}
+
 export function onFiltersChange(callback) {
   const handler = debounce(callback, DEBOUNCE_DELAY_MS);
   filtersForm.addEventListener('change', handler);
