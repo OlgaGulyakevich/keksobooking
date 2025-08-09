@@ -9,6 +9,7 @@ import { qs, showErrorMessage } from './util.js';
 let mapInstance = null;
 let mainPinMarker = null;
 let markerLayerGroup = null;
+let activeTileLayer = null;
 
 const MAIN_PIN_ICON = L.icon({
   iconUrl: 'img/main-pin.svg',
@@ -26,6 +27,44 @@ export function formatCoords({ lat, lng }) {
   return `${lat.toFixed(DEFAULT_DECIMAL_PRECISION)}, ${lng.toFixed(DEFAULT_DECIMAL_PRECISION)}`;
 }
 
+function addTileLayerWithFallback(map) {
+  const sources = [
+    {
+      url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '&copy; OpenStreetMap contributors',
+    },
+    {
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '&copy; OpenStreetMap contributors',
+    },
+    {
+      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      attribution: '&copy; OpenStreetMap, &copy; CartoDB',
+    },
+  ];
+
+  let index = 0;
+  const tryAdd = () => {
+    const src = sources[index];
+    if (!src) {
+      showErrorMessage('Не удалось загрузить карту. Попробуйте позже.');
+      return;
+    }
+    if (activeTileLayer) {
+      map.removeLayer(activeTileLayer);
+      activeTileLayer = null;
+    }
+    activeTileLayer = L.tileLayer(src.url, { attribution: src.attribution, crossOrigin: true })
+      .on('tileerror', () => {
+        index += 1;
+        tryAdd();
+      })
+      .addTo(map);
+  };
+
+  tryAdd();
+}
+
 export function initMap(onReady) {
   if (typeof L === 'undefined') {
     showErrorMessage('Карта не загрузилась. Проверьте подключение Leaflet.');
@@ -38,13 +77,7 @@ export function initMap(onReady) {
     })
     .setView([MAP_CENTER.lat, MAP_CENTER.lng], MAP_DEFAULT_ZOOM);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors',
-  })
-    .on('tileerror', () => {
-      showErrorMessage('Не удалось загрузить тайлы карты. Проверьте соединение.');
-    })
-    .addTo(mapInstance);
+  addTileLayerWithFallback(mapInstance);
 
   markerLayerGroup = L.layerGroup().addTo(mapInstance);
 
