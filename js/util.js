@@ -63,6 +63,8 @@ function getRandomInteger(min, max) {
 	// Округляем до ближайшего меньшего целого, чтобы получить целое число
 	return Math.floor(result);
   }
+
+
   export {
 	getRandomFloat,
 	getRandomInteger
