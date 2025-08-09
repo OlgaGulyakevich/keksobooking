@@ -103,10 +103,7 @@ export function initValidation() {
   timeIn.addEventListener('change', syncTime(timeIn, timeOut));
   timeOut.addEventListener('change', syncTime(timeOut, timeIn));
 
-  // Проверка начальной валидности для несовместимых комнат/гостей
-  pristine.validate(capacitySelect);
-  pristine.validate(titleInput);
-  pristine.validate(priceInput);
+  // Начальные ошибки не показываем, валидация сработает при submit/change
 
   return pristine;
 }

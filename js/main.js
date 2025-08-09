@@ -2,7 +2,7 @@ import { getAds } from './api.js';
 import { normalizeAds } from './data.js';
 import { initMap, onMainPinMove, formatCoords, renderPins } from './map.js';
 import { createAdPopup } from './popup.js';
-import { qs, loadScriptOnce } from './util.js';
+import { qs } from './util.js';
 import { initForm } from './form.js';
 import { initPriceSlider } from './slider.js';
 import { getFilters, filterAds, onFiltersChange, rankAds } from './filter.js';
@@ -19,6 +19,12 @@ function setFormDisabled(disabled) {
   [...formElements, ...filtersForm.elements].forEach((el) => {
     el.disabled = disabled;
   });
+  // Block/enable slider interactions
+  const slider = document.querySelector('.ad-form__slider');
+  if (slider && slider.noUiSlider) {
+    const base = slider.querySelector('.noUi-base');
+    if (base) base.style.pointerEvents = disabled ? 'none' : '';
+  }
 }
 
 function updateAddressField(coords) {
@@ -30,16 +36,6 @@ let cachedAds = [];
 async function bootstrap() {
   // Старт: форма неактивна
   setFormDisabled(true);
-
-  // Гарантируем загрузку Leaflet, noUiSlider и Pristine перед инициализацией
-  try {
-    await loadScriptOnce('https://unpkg.com/leaflet@1.9.4/dist/leaflet.js', 'L');
-    await loadScriptOnce('https://cdn.jsdelivr.net/npm/nouislider@15.7.1/dist/nouislider.min.js', 'noUiSlider');
-    await loadScriptOnce('https://cdn.jsdelivr.net/npm/pristinejs@1.1.9/dist/pristine.min.js', 'Pristine');
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.error(e);
-  }
 
   initMap(() => {
     setFormDisabled(false);
