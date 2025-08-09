@@ -9,6 +9,7 @@ const firstPhotoSlot = form.querySelector('.ad-form__photo');
 const dropZone = form.querySelector('.ad-form__drop-zone');
 
 const DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
+const displayedPhotoKeys = new Set();
 
 function isValidFileType(file) {
   const fileName = file.name.toLowerCase();
@@ -42,17 +43,12 @@ async function handleAvatarChange() {
 async function handleImagesChange() {
   const files = imagesInput.files ? Array.from(imagesInput.files) : [];
   if (!files.length) return;
-  // Очистить все динамические превью, но сохранить первый слот
-  if (photosContainerRoot) {
-    Array.from(photosContainerRoot.querySelectorAll('.ad-form__photo'))
-      .slice(1)
-      .forEach((node) => node.remove());
-  }
-  if (firstPhotoSlot) firstPhotoSlot.innerHTML = '';
-
-  let isFirstFilled = false;
+  // Больше не очищаем уже добавленные превью: добавляем новые, без дублей
+  let isFirstFilled = Boolean(firstPhotoSlot && firstPhotoSlot.children.length > 0);
   for (const file of files) {
     if (!isValidFileType(file)) continue;
+    const key = `${file.name}:${file.size}:${file.lastModified}`;
+    if (displayedPhotoKeys.has(key)) continue;
     try {
       const url = await readAsDataURL(file);
       const img = document.createElement('img');
@@ -71,6 +67,7 @@ async function handleImagesChange() {
         wrapper.appendChild(img);
         photosContainerRoot.appendChild(wrapper);
       }
+      displayedPhotoKeys.add(key);
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('Не удалось прочитать файл фото', e);
@@ -93,6 +90,20 @@ export function initImageUpload() {
       await handleImagesChange();
     });
   }
+  // Drag&Drop для аватара
+  const avatarDrop = form.querySelector('.ad-form-header__drop-zone');
+  if (avatarDrop) {
+    avatarDrop.addEventListener('dragover', (e) => e.preventDefault());
+    avatarDrop.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      const files = Array.from(e.dataTransfer.files || []);
+      if (!files.length) return;
+      const file = files[0];
+      if (!isValidFileType(file)) return;
+      avatarInput.files = e.dataTransfer.files;
+      await handleAvatarChange();
+    });
+  }
 }
 
 export function resetImagePreviews() {
@@ -105,6 +116,7 @@ export function resetImagePreviews() {
   }
   if (avatarInput) avatarInput.value = '';
   if (imagesInput) imagesInput.value = '';
+  displayedPhotoKeys.clear();
 }
 
 

@@ -41,7 +41,12 @@ export function initForm() {
 
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      // Форсируем появление сообщений об ошибках под полями
+      const firstInvalid = form.querySelector('.ad-form__element .ad-form__error');
+      if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
 
     const submitBtn = form.querySelector('.ad-form__submit');
     submitBtn.disabled = true;
@@ -52,10 +57,10 @@ export function initForm() {
       await sendAd(formData);
       resetForm();
       resetImagePreviews();
-      showSuccessMessage();
+      showSuccessMessage('Ваше объявление успешно размещено!');
     } catch (e) {
       // Показываем ошибку, данные формы не трогаем
-      showErrorMessage('Не удалось отправить форму. Проверьте соединение и попробуйте ещё раз.');
+      showErrorMessage(e?.message || 'Не удалось отправить форму. Проверьте соединение и попробуйте ещё раз.');
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Опубликовать';
