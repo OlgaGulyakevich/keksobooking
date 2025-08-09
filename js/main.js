@@ -1,6 +1,7 @@
 import { getAds } from './api.js';
 import { normalizeAds } from './data.js';
 import { initMap, onMainPinMove, formatCoords, renderPins } from './map.js';
+import { createAdPopup } from './popup.js';
 import { qs } from './util.js';
 
 const form = document.querySelector('.ad-form');
@@ -34,7 +35,7 @@ async function bootstrap() {
   try {
     const raw = await getAds();
     const ads = normalizeAds(raw);
-    renderPins(ads);
+    renderPins(ads, createAdPopup);
   } catch (e) {
     // Ошибки загрузки данных не блокируют карту и форму
     // Можно добавить показ баннера/уведомления
