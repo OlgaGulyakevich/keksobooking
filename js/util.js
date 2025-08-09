@@ -1,6 +1,8 @@
 import {
   DEFAULT_DECIMAL_PRECISION,
   KEY_ESCAPE,
+  TEMPLATE_ID_SUCCESS,
+  TEMPLATE_ID_ERROR,
 } from './constants.js';
 
 /**
@@ -151,4 +153,50 @@ export function onEscape(callback) {
   }
   document.addEventListener('keydown', handler);
   return () => document.removeEventListener('keydown', handler);
+}
+
+// Сообщения (успех/ошибка) на основе шаблонов в DOM
+function showMessageByTemplate(templateId, { autoCloseMs = null } = {}) {
+  const template = document.querySelector(`#${templateId}`);
+  const node = template?.content?.firstElementChild?.cloneNode(true);
+  if (!node) return () => {};
+
+  document.body.appendChild(node);
+
+  const remove = () => {
+    node.remove();
+    unsubscribe();
+  };
+
+  const unsubscribeEsc = onEscape(remove);
+  const onClick = () => remove();
+  node.addEventListener('click', onClick);
+
+  // Кнопка «Попробовать снова» в ошибке
+  const errorBtn = node.querySelector('.error__button');
+  if (errorBtn) errorBtn.addEventListener('click', onClick);
+
+  const unsubscribe = () => {
+    node.removeEventListener('click', onClick);
+    if (errorBtn) errorBtn.removeEventListener('click', onClick);
+    unsubscribeEsc();
+  };
+
+  let timerId = null;
+  if (typeof autoCloseMs === 'number' && autoCloseMs > 0) {
+    timerId = setTimeout(remove, autoCloseMs);
+  }
+
+  return () => {
+    if (timerId) clearTimeout(timerId);
+    remove();
+  };
+}
+
+export function showSuccessMessage() {
+  return showMessageByTemplate(TEMPLATE_ID_SUCCESS);
+}
+
+export function showErrorMessage() {
+  return showMessageByTemplate(TEMPLATE_ID_ERROR);
 }

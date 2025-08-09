@@ -3,6 +3,7 @@ import { normalizeAds } from './data.js';
 import { initMap, onMainPinMove, formatCoords, renderPins } from './map.js';
 import { createAdPopup } from './popup.js';
 import { qs } from './util.js';
+import { initForm } from './form.js';
 
 const form = document.querySelector('.ad-form');
 const formElements = form.querySelectorAll('fieldset, select, input, textarea, button');
@@ -28,6 +29,7 @@ async function bootstrap() {
   // Инициализация карты, затем включаем формы
   initMap(() => {
     setFormDisabled(false);
+    initForm();
   });
 
   onMainPinMove(updateAddressField);
