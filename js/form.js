@@ -25,6 +25,8 @@ export function initForm() {
   initValidation();
   setDefaultAddress();
   initImageUpload();
+  // Поле адреса запрещено для ручного редактирования
+  addressInput.readOnly = true;
 
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
@@ -38,6 +40,7 @@ export function initForm() {
       const formData = new FormData(form);
       await sendAd(formData);
       resetForm();
+      resetImagePreviews();
       showSuccessMessage();
     } catch (e) {
       showErrorMessage();

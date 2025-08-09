@@ -12,6 +12,7 @@ export function initPriceSlider() {
   const typeSelect = /** @type {HTMLSelectElement} */ (form.querySelector('#type'));
   const slider = form.querySelector('.ad-form__slider');
   if (!priceInput || !typeSelect || !slider) return null;
+  if (typeof noUiSlider === 'undefined') return null;
 
   const getMinByType = () => PRICE_MIN_BY_TYPE[typeSelect.value] ?? SLIDER_MIN;
 

@@ -38,6 +38,14 @@ function addTileLayerWithFallback(map) {
       attribution: '&copy; OpenStreetMap contributors',
     },
     {
+      url: 'https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png',
+      attribution: '&copy; OpenStreetMap France',
+    },
+    {
+      url: 'https://{s}.tile.openstreetmap.de/tiles/osmde/{z}/{x}/{y}.png',
+      attribution: '&copy; OpenStreetMap Germany',
+    },
+    {
       url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
       attribution: '&copy; OpenStreetMap, &copy; CartoDB',
     },
@@ -54,7 +62,13 @@ function addTileLayerWithFallback(map) {
       map.removeLayer(activeTileLayer);
       activeTileLayer = null;
     }
-    activeTileLayer = L.tileLayer(src.url, { attribution: src.attribution, crossOrigin: true })
+    activeTileLayer = L.tileLayer(src.url, {
+      attribution: src.attribution,
+      crossOrigin: true,
+      detectRetina: true,
+      subdomains: 'abcd',
+      maxZoom: 19,
+    })
       .on('tileerror', () => {
         index += 1;
         tryAdd();
@@ -111,7 +125,9 @@ export function renderPins(ads, buildPopupContent) {
   ads.slice(0, MAX_VISIBLE_PINS).forEach((ad) => {
     const marker = L.marker([ad.lat, ad.lng], { icon: PIN_ICON });
     if (typeof buildPopupContent === 'function') {
-      marker.bindPopup(buildPopupContent(ad));
+      const node = buildPopupContent(ad);
+      const html = node && node.outerHTML ? node.outerHTML : '';
+      marker.bindPopup(html, { closeButton: true });
     }
     marker.addTo(markerLayerGroup);
   });

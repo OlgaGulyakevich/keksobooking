@@ -4,7 +4,8 @@ const form = document.querySelector('.ad-form');
 const avatarInput = /** @type {HTMLInputElement} */ (form.querySelector('#avatar'));
 const avatarPreviewImg = /** @type {HTMLImageElement} */ (form.querySelector('.ad-form-header__preview img'));
 const imagesInput = /** @type {HTMLInputElement} */ (form.querySelector('#images'));
-const photosContainer = form.querySelector('.ad-form__photo');
+const photosContainerRoot = form.querySelector('.ad-form__photo-container');
+const firstPhotoSlot = form.querySelector('.ad-form__photo');
 const dropZone = form.querySelector('.ad-form__drop-zone');
 
 const DEFAULT_AVATAR_SRC = 'img/muffin-grey.svg';
@@ -41,7 +42,15 @@ async function handleAvatarChange() {
 async function handleImagesChange() {
   const files = imagesInput.files ? Array.from(imagesInput.files) : [];
   if (!files.length) return;
-  photosContainer.innerHTML = '';
+  // Очистить все динамические превью, но сохранить первый слот
+  if (photosContainerRoot) {
+    Array.from(photosContainerRoot.querySelectorAll('.ad-form__photo'))
+      .slice(1)
+      .forEach((node) => node.remove());
+  }
+  if (firstPhotoSlot) firstPhotoSlot.innerHTML = '';
+
+  let isFirstFilled = false;
   for (const file of files) {
     if (!isValidFileType(file)) continue;
     try {
@@ -52,7 +61,16 @@ async function handleImagesChange() {
       img.style.width = '70px';
       img.style.height = '70px';
       img.style.objectFit = 'cover';
-      photosContainer.appendChild(img);
+
+      if (!isFirstFilled && firstPhotoSlot) {
+        firstPhotoSlot.appendChild(img);
+        isFirstFilled = true;
+      } else if (photosContainerRoot) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'ad-form__photo';
+        wrapper.appendChild(img);
+        photosContainerRoot.appendChild(wrapper);
+      }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('Не удалось прочитать файл фото', e);
@@ -79,7 +97,12 @@ export function initImageUpload() {
 
 export function resetImagePreviews() {
   if (avatarPreviewImg) avatarPreviewImg.src = DEFAULT_AVATAR_SRC;
-  if (photosContainer) photosContainer.innerHTML = '';
+  if (firstPhotoSlot) firstPhotoSlot.innerHTML = '';
+  if (photosContainerRoot) {
+    Array.from(photosContainerRoot.querySelectorAll('.ad-form__photo'))
+      .slice(1)
+      .forEach((node) => node.remove());
+  }
   if (avatarInput) avatarInput.value = '';
   if (imagesInput) imagesInput.value = '';
 }

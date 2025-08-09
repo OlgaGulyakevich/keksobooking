@@ -75,6 +75,7 @@ function syncTime(src, dest) {
 }
 
 export function initValidation() {
+  if (typeof Pristine === 'undefined') return null;
   pristine = new Pristine(form, {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
@@ -101,6 +102,11 @@ export function initValidation() {
   // Time sync
   timeIn.addEventListener('change', syncTime(timeIn, timeOut));
   timeOut.addEventListener('change', syncTime(timeOut, timeIn));
+
+  // Проверка начальной валидности для несовместимых комнат/гостей
+  pristine.validate(capacitySelect);
+  pristine.validate(titleInput);
+  pristine.validate(priceInput);
 
   return pristine;
 }
