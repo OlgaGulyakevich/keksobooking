@@ -359,6 +359,9 @@ fieldset {
 }
 .ad-form__element .noUi-horizontal {
   height: 8px;
+  width: 89%;
+
+
 }
 .ad-form__element .noUi-handle {
   width: 22px;
