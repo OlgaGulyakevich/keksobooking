@@ -8,6 +8,8 @@ import { initImageUpload, resetImagePreviews } from './image-upload.js';
 const form = document.querySelector('.ad-form');
 const resetButton = form.querySelector('.ad-form__reset');
 const addressInput = /** @type {HTMLInputElement} */ (form.querySelector('#address'));
+const filtersForm = document.querySelector('.map__filters');
+const typeSelect = /** @type {HTMLSelectElement} */ (form.querySelector('#type'));
 
 function setDefaultAddress() {
   addressInput.value = formatCoords(MAP_CENTER);
@@ -19,6 +21,15 @@ function resetForm() {
   setDefaultAddress();
   const openedPopup = document.querySelector('.leaflet-popup');
   if (openedPopup) openedPopup.remove();
+  // Сброс фильтров и перерисовка меток
+  if (filtersForm) {
+    filtersForm.reset();
+    filtersForm.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+  // Синхронизация минимума цены и слайдера с текущим типом жилья
+  if (typeSelect) {
+    typeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+  }
 }
 
 export function initForm() {
@@ -43,7 +54,8 @@ export function initForm() {
       resetImagePreviews();
       showSuccessMessage();
     } catch (e) {
-      showErrorMessage();
+      // Показываем ошибку, данные формы не трогаем
+      showErrorMessage('Не удалось отправить форму. Проверьте соединение и попробуйте ещё раз.');
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = 'Опубликовать';

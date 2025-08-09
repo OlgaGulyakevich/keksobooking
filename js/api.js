@@ -30,7 +30,12 @@ export async function sendAd(formData) {
       body: formData,
     });
     if (!response.ok) {
-      throw new Error(`Ошибка отправки формы: ${response.status} ${response.statusText}`);
+      // Пробуем получить текст ошибки от сервера
+      let details = '';
+      try {
+        details = await response.text();
+      } catch (_) { /* ignore */ }
+      throw new Error(`Ошибка отправки формы: ${response.status} ${response.statusText}${details ? ` — ${details}` : ''}`);
     }
     return await response.json();
   } catch (error) {
