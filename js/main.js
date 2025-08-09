@@ -31,12 +31,11 @@ async function bootstrap() {
   // Старт: форма неактивна
   setFormDisabled(true);
 
-  // Инициализация карты, затем включаем формы
-  initMap(() => {
-    setFormDisabled(false);
-    initForm();
-    initPriceSlider();
-  });
+  // Инициализация карты и сразу включаем формы, не дожидаясь загрузки тайлов
+  initMap(() => {});
+  setFormDisabled(false);
+  initForm();
+  initPriceSlider();
 
   onMainPinMove(updateAddressField);
 

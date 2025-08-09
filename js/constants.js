@@ -48,7 +48,7 @@ export const DEBOUNCE_DELAY_MS = 500;
 export const THROTTLE_INTERVAL_MS = 300;
 
 // Допустимые типы файлов изображений
-export const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png'];
+export const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'heic', 'heif'];
 
 // Клавиши
 export const KEY_ESCAPE = 'Escape';
