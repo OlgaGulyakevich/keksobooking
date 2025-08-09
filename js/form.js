@@ -2,7 +2,8 @@ import { sendAd } from './api.js';
 import { initValidation, validateForm } from './validation.js';
 import { showSuccessMessage, showErrorMessage } from './util.js';
 import { resetMainPin, formatCoords } from './map.js';
-import { MAP_CENTER, DEFAULT_DECIMAL_PRECISION } from './constants.js';
+import { MAP_CENTER } from './constants.js';
+import { initImageUpload, resetImagePreviews } from './image-upload.js';
 
 const form = document.querySelector('.ad-form');
 const resetButton = form.querySelector('.ad-form__reset');
@@ -21,6 +22,7 @@ function resetForm() {
 export function initForm() {
   initValidation();
   setDefaultAddress();
+  initImageUpload();
 
   form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
@@ -46,6 +48,7 @@ export function initForm() {
   resetButton.addEventListener('click', (evt) => {
     evt.preventDefault();
     resetForm();
+    resetImagePreviews();
   });
 }
 
