@@ -353,6 +353,19 @@ fieldset {
   font-size: 14px;
 }
 
+/* noUiSlider layout fix: keep slider under price input and within container */
+.ad-form__element .noUi-target {
+  margin-top: 8px;
+}
+.ad-form__element .noUi-horizontal {
+  height: 8px;
+}
+.ad-form__element .noUi-handle {
+  width: 22px;
+  height: 22px;
+  right: -11px; /* center handle on edge */
+}
+
 .ad-form__element--wide {
   -ms-flex-preferred-size: 50%;
       flex-basis: 50%;

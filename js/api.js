@@ -37,7 +37,16 @@ export async function sendAd(formData) {
       } catch (_) { /* ignore */ }
       throw new Error(`Ошибка отправки формы: ${response.status} ${response.statusText}${details ? ` — ${details}` : ''}`);
     }
-    return await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+      return await response.json();
+    }
+    // На некоторых стендах успешный ответ может быть пустым/текстовым
+    try {
+      return await response.text();
+    } catch (_) {
+      return null;
+    }
   } catch (error) {
     throw new Error(`Не удалось отправить форму. ${error.message}`);
   }
