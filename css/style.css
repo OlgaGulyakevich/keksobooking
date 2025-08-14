@@ -362,8 +362,8 @@ fieldset {
   box-shadow: none;
   height: 2px;
   position: relative;
-  width: calc(100% - 28px); /* Учитываем padding input: 14px слева + 14px справа */
-  margin-left: 4px;
+  width: 90% !important; /* Учитываем padding input: 14px слева + 14px справа */
+  margin-left: 10px !important;
 }
 
 .ad-form__element .noUi-horizontal {
@@ -373,8 +373,8 @@ fieldset {
 .ad-form__element .noUi-handle {
   width: 10px !important;
   height: 10px !important;
-  /* right: -5px; */
-  /* top: -4px; */
+  right: -5px !important;
+  top: -4px !important;
   background: #333333;
   border: none;
   border-radius: 50%;
