@@ -353,39 +353,58 @@ fieldset {
   font-size: 14px;
 }
 
-/* Улучшенный дизайн слайдера цены */
+/* Минималистичный дизайн слайдера в стиле современных UI */
 .ad-form__element .noUi-target {
-  margin-top: 10px;
-  margin-bottom: 15px; /* Добавляем отступ снизу чтобы не перекрывать другие элементы */
-  background: #f0f0f0;
-  border: 1px solid #d0d0d0;
-  border-radius: 6px;
+  margin-top: 12px;
+  margin-bottom: 18px;
+  background: #e5e5e5;
+  border: none;
+  border-radius: 10px;
   box-shadow: none;
+  height: 4px;
 }
 
 .ad-form__element .noUi-horizontal {
-  height: 10px;
-  width: 88%;
-  max-width: calc(100% - 30px); /* Ограничиваем ширину чтобы handle не выходил за границы */
+  height: 4px;
+  width: 90%;
+  max-width: calc(100% - 20px);
 }
 
 .ad-form__element .noUi-handle {
-  width: 24px;
-  height: 24px;
-  right: -12px; /* center handle on edge */
-  background: #ff6547;
-  border: 2px solid #ffffff;
+  width: 18px;
+  height: 18px;
+  right: -9px;
+  top: -7px;
+  background: #333333;
+  border: none;
   border-radius: 50%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .ad-form__element .noUi-handle:hover {
-  background: #ff5230;
+  background: #000000;
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.ad-form__element .noUi-handle:active {
+  transform: scale(1.2);
+}
+
+.ad-form__element .noUi-handle:focus {
+  outline: none;
+}
+
+.ad-form__element .noUi-handle::before,
+.ad-form__element .noUi-handle::after {
+  display: none;
 }
 
 .ad-form__element .noUi-connect {
-  background: #ff6547;
+  background: #333333;
+  border-radius: 10px;
 }
 
 /* Увеличиваем минимальную высоту элемента с слайдером */

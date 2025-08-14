@@ -85,7 +85,31 @@ export function initMap(onReady) {
     return null;
   }
   const canvas = qs('#map-canvas');
-  mapInstance = L.map(canvas)
+  mapInstance = L.map(canvas, {
+    // Плавные переходы и улучшенный UX
+    zoomAnimation: true,
+    fadeAnimation: true,
+    markerZoomAnimation: true,
+    zoomAnimationThreshold: 10,
+    
+    // Улучшенное управление
+    scrollWheelZoom: true,
+    doubleClickZoom: true,
+    touchZoom: true,
+    
+    // Плавная инерция
+    inertia: true,
+    inertiaDeceleration: 3000,
+    inertiaMaxSpeed: 1500,
+    
+    // Плавное перетаскивание
+    worldCopyJump: true,
+    maxBoundsViscosity: 0.3,
+    
+    // Минимальный и максимальный зум
+    minZoom: 10,
+    maxZoom: 18,
+  })
     .on('load', () => {
       if (typeof onReady === 'function') onReady();
     })
@@ -115,7 +139,15 @@ export function onMainPinMove(callback) {
 
 export function resetMainPin() {
   if (mainPinMarker) {
+    // Плавный переход к центру карты
     mainPinMarker.setLatLng([MAP_CENTER.lat, MAP_CENTER.lng]);
+    if (mapInstance) {
+      mapInstance.flyTo([MAP_CENTER.lat, MAP_CENTER.lng], MAP_DEFAULT_ZOOM, {
+        animate: true,
+        duration: 1.2,
+        easeLinearity: 0.25
+      });
+    }
   }
 }
 
