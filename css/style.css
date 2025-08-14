@@ -353,9 +353,9 @@ fieldset {
   font-size: 14px;
 }
 
-/* Минималистичный дизайн слайдера - точно по ширине input поля */
+/* Минималистичный дизайн слайдера - точно по границам input поля */
 .ad-form__element .noUi-target {
-  margin-top: 0;
+  margin-top: 2px;
   margin-bottom: 15px;
   background: #e5e5e5;
   border: none;
@@ -363,9 +363,8 @@ fieldset {
   box-shadow: none;
   height: 2px;
   position: relative;
-  top: -1px; /* Прямо к нижней границе input */
-  width: calc(100% - 20px); /* Точно по ширине input */
-  margin-left: 10px; /* Выравниваем с левым краем input */
+  width: calc(100% - 20px); /* Ширина как у input полей */
+  margin-left: 10px; /* Левый отступ как padding у input */
 }
 
 .ad-form__element .noUi-horizontal {
