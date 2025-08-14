@@ -363,7 +363,7 @@ fieldset {
   height: 2px;
   position: relative;
   width: 90% !important; /* Учитываем padding input: 14px слева + 14px справа */
-  margin-left: 10px !important;
+  margin-left: 2px !important;
 }
 
 .ad-form__element .noUi-horizontal {
