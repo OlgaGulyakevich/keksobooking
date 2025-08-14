@@ -786,6 +786,15 @@ fieldset {
   margin-top: 5px;
 }
 
+/* Стили для ошибок валидации Pristine */
+.ad-form__element--error {
+  color: #ff5635 !important;
+  font-size: 12px !important;
+  display: block !important;
+  margin-top: 5px !important;
+  font-weight: normal !important;
+}
+
 /**
  * Карточка объявления
  */
