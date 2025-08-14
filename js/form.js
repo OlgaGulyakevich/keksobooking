@@ -33,8 +33,16 @@ function resetForm() {
 }
 
 export function initForm() {
-  // Отключаем встроенную валидацию браузера, используем только Pristine
-  form.setAttribute('novalidate', true);
+  // Полностью отключаем встроенную валидацию браузера
+  form.setAttribute('novalidate', 'novalidate');
+  form.noValidate = true;
+  
+  // Отключаем валидацию для всех полей ввода
+  const inputs = form.querySelectorAll('input[type="text"], input[type="number"]');
+  inputs.forEach(input => {
+    input.removeAttribute('required');
+    input.setCustomValidity('');
+  });
   
   initValidation();
   setDefaultAddress();
