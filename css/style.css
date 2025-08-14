@@ -353,20 +353,49 @@ fieldset {
   font-size: 14px;
 }
 
-/* noUiSlider layout fix: keep slider under price input and within container */
+/* Улучшенный дизайн слайдера цены */
 .ad-form__element .noUi-target {
-  margin-top: 8px;
+  margin-top: 10px;
+  margin-bottom: 15px; /* Добавляем отступ снизу чтобы не перекрывать другие элементы */
+  background: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  border-radius: 6px;
+  box-shadow: none;
 }
+
 .ad-form__element .noUi-horizontal {
-  height: 8px;
-  width: 89%;
-
-
+  height: 10px;
+  width: 88%;
+  max-width: calc(100% - 30px); /* Ограничиваем ширину чтобы handle не выходил за границы */
 }
+
 .ad-form__element .noUi-handle {
-  width: 22px;
-  height: 22px;
-  right: -11px; /* center handle on edge */
+  width: 24px;
+  height: 24px;
+  right: -12px; /* center handle on edge */
+  background: #ff6547;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.ad-form__element .noUi-handle:hover {
+  background: #ff5230;
+}
+
+.ad-form__element .noUi-connect {
+  background: #ff6547;
+}
+
+/* Увеличиваем минимальную высоту элемента с слайдером */
+.ad-form__element:nth-child(4) { /* Элемент с ценой и слайдером */
+  min-height: 120px;
+}
+
+/* Добавляем отступы к элементам времени заезда */
+.ad-form__element--time {
+  margin-top: 10px;
 }
 
 .ad-form__element--wide {

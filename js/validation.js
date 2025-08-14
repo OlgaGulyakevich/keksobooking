@@ -64,18 +64,18 @@ export function initValidation() {
   });
 
   // Title
-  pristine.addValidator(titleInput, validateTitle, 'От 30 до 100 символов');
+  pristine.addValidator(titleInput, validateTitle, 'Заголовок должен содержать от 30 до 100 символов');
 
   // Price
   syncPriceAttributes();
-  pristine.addValidator(priceInput, validatePrice, 'Цена должна быть в допустимых пределах');
+  pristine.addValidator(priceInput, validatePrice, 'Укажите подходящую цену для выбранного типа жилья');
 
   typeSelect.addEventListener('change', () => {
     syncPriceAttributes();
   });
 
   // Rooms/capacity
-  pristine.addValidator(capacitySelect, validateRoomsCapacity, 'Недопустимое сочетание комнат и гостей');
+  pristine.addValidator(capacitySelect, validateRoomsCapacity, 'Количество комнат не соответствует количеству гостей');
   roomsSelect.addEventListener('change', () => {});
   capacitySelect.addEventListener('change', () => {});
 
