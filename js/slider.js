@@ -22,7 +22,7 @@ export function initPriceSlider() {
       min: SLIDER_MIN,
       max: SLIDER_MAX,
     },
-    start: getMinByType(),
+    start: SLIDER_MIN,
     step: SLIDER_STEP,
     connect: 'lower',
     format: {
