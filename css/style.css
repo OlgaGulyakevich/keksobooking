@@ -355,7 +355,6 @@ fieldset {
 
 /* Минималистичный дизайн слайдера - точно по размеру input поля */
 .ad-form__element .noUi-target {
-  margin-top: 2px;
   margin-bottom: 15px;
   background: #e5e5e5;
   border: none;
@@ -364,44 +363,50 @@ fieldset {
   height: 2px;
   position: relative;
   width: calc(100% - 28px); /* Учитываем padding input: 14px слева + 14px справа */
-  margin-left: 14px; /* Точно как padding-left у input */
+  margin-left: 4px;
 }
 
 .ad-form__element .noUi-horizontal {
   height: 2px;
-  width: 100%;
 }
 
-.ad-form__element .noUi-handle {
-  width: 10px;
-  height: 10px;
-  right: -5px;
-  top: -4px;
-  background: #333333;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: all 0.2s ease;
+/* Увеличиваем специфичность для переопределения стилей noUiSlider */
+.ad-form__element .ad-form__element .noUi-handle,
+.ad-form__element .noUi-horizontal .noUi-handle {
+  width: 10px !important;
+  height: 10px !important;
+  right: -5px !important;
+  top: -4px !important;
+  background: #333333 !important;
+  border: none !important;
+  border-radius: 50% !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
 }
 
-.ad-form__element .noUi-handle:hover {
-  background: #000000;
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+.ad-form__element .ad-form__element .noUi-handle:hover,
+.ad-form__element .noUi-horizontal .noUi-handle:hover {
+  background: #000000 !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
 }
 
-.ad-form__element .noUi-handle:active {
-  transform: scale(1.2);
+.ad-form__element .ad-form__element .noUi-handle:active,
+.ad-form__element .noUi-horizontal .noUi-handle:active {
+  transform: scale(1.2) !important;
 }
 
-.ad-form__element .noUi-handle:focus {
-  outline: none;
+.ad-form__element .ad-form__element .noUi-handle:focus,
+.ad-form__element .noUi-horizontal .noUi-handle:focus {
+  outline: none !important;
 }
 
-.ad-form__element .noUi-handle::before,
-.ad-form__element .noUi-handle::after {
-  display: none;
+.ad-form__element .ad-form__element .noUi-handle::before,
+.ad-form__element .ad-form__element .noUi-handle::after,
+.ad-form__element .noUi-horizontal .noUi-handle::before,
+.ad-form__element .noUi-horizontal .noUi-handle::after {
+  display: none !important;
 }
 
 .ad-form__element .noUi-connect {
