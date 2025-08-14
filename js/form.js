@@ -43,7 +43,7 @@ export function initForm() {
     evt.preventDefault();
     if (!validateForm()) {
       // Форсируем появление сообщений об ошибках под полями
-      const firstInvalid = form.querySelector('.ad-form__element .ad-form__error');
+      const firstInvalid = form.querySelector('.ad-form__element .ad-form__element--error');
       if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
