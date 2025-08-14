@@ -7,7 +7,7 @@ export const DEFAULT_DECIMAL_PRECISION = 5;
 
 // Карта (Токио)
 export const MAP_CENTER = { lat: 35.6895, lng: 139.6917 };
-export const MAP_DEFAULT_ZOOM = 12;
+export const MAP_DEFAULT_ZOOM = 13; // Увеличиваем масштаб для лучшего обзора
 export const MAX_VISIBLE_PINS = 10;
 
 // Ограничения значений полей

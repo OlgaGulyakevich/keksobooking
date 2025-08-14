@@ -32,16 +32,7 @@ function validateTitle(value) {
   return value.length >= TITLE_MIN_LENGTH && value.length <= TITLE_MAX_LENGTH;
 }
 
-function getTitleError() {
-  const len = titleInput.value.length;
-  if (len < TITLE_MIN_LENGTH) {
-    return `Ещё ${TITLE_MIN_LENGTH - len} сим.`;
-  }
-  if (len > TITLE_MAX_LENGTH) {
-    return `Лишних ${len - TITLE_MAX_LENGTH} сим.`;
-  }
-  return '';
-}
+
 
 function validatePrice(value) {
   const num = Number(value);
@@ -49,24 +40,14 @@ function validatePrice(value) {
   return Number.isFinite(num) && num >= min && num <= PRICE_MAX;
 }
 
-function getPriceError() {
-  const min = getMinPrice();
-  return `Минимум для типа — ${min}, максимум — ${PRICE_MAX}`;
-}
+
 
 function validateRoomsCapacity() {
   const allowed = ROOMS_TO_GUESTS[roomsSelect.value] || [];
   return allowed.includes(Number(capacitySelect.value));
 }
 
-function getRoomsCapacityError() {
-  const allowed = ROOMS_TO_GUESTS[roomsSelect.value] || [];
-  if (allowed.length === 0) return 'Недопустимое сочетание';
-  const readable = allowed
-    .map((g) => (g === 0 ? 'не для гостей' : `${g}`))
-    .join(', ');
-  return `Доступно: ${readable}`;
-}
+
 
 function syncTime(src, dest) {
   return () => {
@@ -76,28 +57,28 @@ function syncTime(src, dest) {
 
 export function initValidation() {
   if (typeof Pristine === 'undefined') return null;
+  
   pristine = new Pristine(form, {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
-    errorTextClass: 'ad-form__error',
+    errorTextClass: 'ad-form__element--error',
   });
 
   // Title
-  pristine.addValidator(titleInput, validateTitle, getTitleError);
+  pristine.addValidator(titleInput, validateTitle, 'Заголовок должен содержать от 30 до 100 символов');
 
   // Price
   syncPriceAttributes();
-  pristine.addValidator(priceInput, validatePrice, getPriceError);
+  pristine.addValidator(priceInput, validatePrice, 'Укажите подходящую цену для выбранного типа жилья');
 
   typeSelect.addEventListener('change', () => {
     syncPriceAttributes();
-    pristine.validate(priceInput);
   });
 
   // Rooms/capacity
-  pristine.addValidator(capacitySelect, validateRoomsCapacity, getRoomsCapacityError);
-  roomsSelect.addEventListener('change', () => pristine.validate(capacitySelect));
-  capacitySelect.addEventListener('change', () => pristine.validate(capacitySelect));
+  pristine.addValidator(capacitySelect, validateRoomsCapacity, 'Количество комнат не соответствует количеству гостей');
+  roomsSelect.addEventListener('change', () => {});
+  capacitySelect.addEventListener('change', () => {});
 
   // Time sync
   timeIn.addEventListener('change', syncTime(timeIn, timeOut));

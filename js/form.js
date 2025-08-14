@@ -33,6 +33,17 @@ function resetForm() {
 }
 
 export function initForm() {
+  // Полностью отключаем встроенную валидацию браузера
+  form.setAttribute('novalidate', 'novalidate');
+  form.noValidate = true;
+  
+  // Отключаем валидацию для всех полей ввода
+  const inputs = form.querySelectorAll('input[type="text"], input[type="number"]');
+  inputs.forEach(input => {
+    input.removeAttribute('required');
+    input.setCustomValidity('');
+  });
+  
   initValidation();
   setDefaultAddress();
   initImageUpload();
@@ -43,7 +54,7 @@ export function initForm() {
     evt.preventDefault();
     if (!validateForm()) {
       // Форсируем появление сообщений об ошибках под полями
-      const firstInvalid = form.querySelector('.ad-form__element .ad-form__error');
+      const firstInvalid = form.querySelector('.ad-form__element .ad-form__element--error');
       if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
