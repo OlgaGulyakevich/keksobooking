@@ -353,32 +353,33 @@ fieldset {
   font-size: 14px;
 }
 
-/* Минималистичный дизайн слайдера в стиле современных UI */
+/* Минималистичный дизайн слайдера - точно под input полем */
 .ad-form__element .noUi-target {
-  margin-top: 12px;
-  margin-bottom: 18px;
+  margin-top: 0;
+  margin-bottom: 15px;
   background: #e5e5e5;
   border: none;
-  border-radius: 10px;
+  border-radius: 2px;
   box-shadow: none;
-  height: 4px;
+  height: 2px;
+  position: relative;
+  top: -1px; /* Прямо к нижней границе input */
 }
 
 .ad-form__element .noUi-horizontal {
-  height: 4px;
-  width: 90%;
-  max-width: calc(100% - 20px);
+  height: 2px;
+  width: calc(100% - 20px);
 }
 
 .ad-form__element .noUi-handle {
-  width: 18px;
-  height: 18px;
-  right: -9px;
-  top: -7px;
+  width: 14px;
+  height: 14px;
+  right: -7px;
+  top: -6px;
   background: #333333;
   border: none;
   border-radius: 50%;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   transition: all 0.2s ease;
 }

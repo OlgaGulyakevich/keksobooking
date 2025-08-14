@@ -33,6 +33,9 @@ function resetForm() {
 }
 
 export function initForm() {
+  // Отключаем встроенную валидацию браузера, используем только Pristine
+  form.setAttribute('novalidate', true);
+  
   initValidation();
   setDefaultAddress();
   initImageUpload();
