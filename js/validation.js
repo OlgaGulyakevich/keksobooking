@@ -56,7 +56,13 @@ function syncTime(src, dest) {
 }
 
 export function initValidation() {
-  if (typeof Pristine === 'undefined') return null;
+  console.log('initValidation called');
+  console.log('typeof Pristine:', typeof Pristine);
+  console.log('window.Pristine:', window.Pristine);
+  if (typeof Pristine === 'undefined') {
+    console.error('Pristine is undefined, validation disabled');
+    return null;
+  }
   pristine = new Pristine(form, {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',

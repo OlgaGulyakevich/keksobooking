@@ -33,15 +33,20 @@ function resetForm() {
 }
 
 export function initForm() {
-  initValidation();
+  console.log('initForm called');
+  const validation = initValidation();
+  console.log('Validation initialized:', !!validation);
   setDefaultAddress();
   initImageUpload();
   // Поле адреса запрещено для ручного редактирования
   addressInput.readOnly = true;
 
   form.addEventListener('submit', async (evt) => {
+    console.log('Form submit event triggered');
     evt.preventDefault();
-    if (!validateForm()) {
+    const isValid = validateForm();
+    console.log('Validation result:', isValid);
+    if (!isValid) {
       // Форсируем появление сообщений об ошибках под полями
       const firstInvalid = form.querySelector('.ad-form__element .ad-form__element--error');
       if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
